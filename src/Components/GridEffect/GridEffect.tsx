@@ -115,7 +115,7 @@ const GridEffect: React.FC = () => {
                 ctx.clearRect(-1, -1, canvasRef.current.width, canvasRef.current.height);
 
                 if (circleArray !== null) {
-                    circleArray.map(c => {
+                    circleArray.forEach(c => {
                         if (c.position.x2 && c.position.y2) {
                             if (ctx !== null) {
                                 if (c.anim) {
@@ -137,15 +137,14 @@ const GridEffect: React.FC = () => {
 
     let updateCircle = () => {
         if (circleRef.current !== null) {
-            circleRef.current = circleRef.current.map<ICircle>(o => {
+            circleRef.current.forEach(o => {
                 if (o.r < 150) {
                     o.r += 3
-                    return o;
                 } else {
                     o.anim = false;
-                    return o;
                 }
             })
+
         }
     }
 
