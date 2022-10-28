@@ -88,13 +88,7 @@ let circleAnimation = (ctx: CanvasRenderingContext2D, centerX: number, centerY: 
 //------------------------------------------------------------COMPONENT
 const GridEffect: React.FC = () => {
 
-    let circleRef = useRef<ICircle>({
-        id: 0,
-        r: 50,
-        anim: true,
-        color: 'black',
-        position: {x1: null, y1: null, x2: 300, y2: 200}
-    })
+    let circleRef = useRef<ICircle[]>([])
     let canvasRef = useRef<HTMLCanvasElement>(null);
     let requestIdRef = useRef<number>(0);
 
@@ -115,20 +109,24 @@ const GridEffect: React.FC = () => {
             let canvas = canvasRef.current;
             let ctx = canvas.getContext('2d');
 
-            let circle = circleRef.current;
+            let circleArray = circleRef.current;
             if (ctx !== null) {
 
                 ctx.clearRect(-1, -1, canvasRef.current.width, canvasRef.current.height);
 
-                if (circle !== null) {
-                    if (circle.position.x2 && circle.position.y2) {
+                if (circleArray !== null) {
+                    circleArray.map(c => {
+                        if (c.position.x2 && c.position.y2) {
+                            if (ctx !== null) {
+                                if (c.anim) {
+                                    circleAnimation(ctx, c.position.x2, c.position.y2, c.r);
+                                } else {
+                                    drawCircle(ctx, c.position.x2, c.position.y2, c.color, c.r)
+                                }
 
-                        if (circle.anim) {
-                            circleAnimation(ctx, circle.position.x2, circle.position.y2, circle.r);
-                        } else {
-                            drawCircle(ctx, circle.position.x2, circle.position.y2, circle.color, circle.r);
+                            }
                         }
-                    }
+                    })
                 }
 
             } else {
@@ -139,11 +137,15 @@ const GridEffect: React.FC = () => {
 
     let updateCircle = () => {
         if (circleRef.current !== null) {
-            if (circleRef.current.r < 150) {
-                return circleRef.current.r += 3;
-            } else {
-                return circleRef.current.anim = false;
-            }
+            circleRef.current = circleRef.current.map<ICircle>(o => {
+                if (o.r < 150) {
+                    o.r += 3
+                    return o;
+                } else {
+                    o.anim = false;
+                    return o;
+                }
+            })
         }
     }
 
@@ -167,6 +169,13 @@ const GridEffect: React.FC = () => {
             <canvas ref={canvasRef} className={g.canvas}
                     onClick={(e) => {
                         let position = getCursorPosition(e.target as HTMLCanvasElement, e);
+                        circleRef.current.push({
+                            id: new Date().getMilliseconds(),
+                            r: 30,
+                            anim: true,
+                            color: 'black',
+                            position: {x1: null, y1: null, x2: position.x, y2: position.y}
+                        })
                         // setClickPosition({
                         //     ...clickPosition,
                         //     x1: clickPosition.x2,
