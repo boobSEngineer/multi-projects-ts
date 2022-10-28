@@ -67,23 +67,45 @@ let getCursorPosition = (canvas: HTMLCanvasElement, e: any): { x: number, y: num
 //     ctx.stroke();
 // }
 
+
 let drawCircle = (ctx: CanvasRenderingContext2D, centerX: number, centerY: number, color: string, r: number) => {
-    // let r = Math.sqrt(Math.pow((centerX), 2) + Math.pow((centerY), 2));
     ctx.beginPath();
     ctx.lineWidth = 20;
     ctx.globalCompositeOperation = "source-over";
-    ctx.strokeStyle = `${color}`;
+    ctx.fillStyle = `${color}`;
     ctx.arc(centerX, centerY, r, 0, 2 * Math.PI);
-    ctx.stroke();
+    ctx.fill();
 }
 
-let circleAnimation = (ctx: CanvasRenderingContext2D, centerX: number, centerY: number, r: number) => {
+let circleAnimation = (ctx: CanvasRenderingContext2D, centerX: number, centerY: number, color: string, r: number) => {
     if (centerX && centerY) {
-        drawCircle(ctx, centerX, centerY, 'blue', r - 10);
-        drawCircle(ctx, centerX, centerY, 'green', r);
+        //drawCircle(ctx, centerX, centerY, 'blue', r - 5);
+        drawCircle(ctx, centerX, centerY, color, r);
     }
 
 }
+
+let solveRadiusCircle = (w: number, h: number): number => {
+    return Math.sqrt(Math.pow((w), 2) + Math.pow((h), 2));
+}
+
+let randomColor = (): string => {
+    let string_color = [];
+    let array_letter = ['a', 'b', 'c', 'd', 'e', 'f'];
+
+    for (let i = 0; i < 6; i++) {
+        if (Math.floor(Math.random()) < .6) {
+            let number = Math.floor(Math.random() * 10);
+            string_color.push(number)
+        } else {
+            let index_letter = Math.floor(Math.random() * 6);
+            string_color.push(array_letter[index_letter]);
+        }
+    }
+    console.log(string_color);
+    return '#' + string_color.join('');
+}
+
 
 //------------------------------------------------------------COMPONENT
 const GridEffect: React.FC = () => {
@@ -109,26 +131,24 @@ const GridEffect: React.FC = () => {
             let canvas = canvasRef.current;
             let ctx = canvas.getContext('2d');
 
-            let circleArray = circleRef.current;
             if (ctx !== null) {
-
-                ctx.clearRect(-1, -1, canvasRef.current.width, canvasRef.current.height);
-
-                if (circleArray !== null) {
-                    circleArray.forEach(c => {
+                if (circleRef.current !== null) {
+                    circleRef.current.forEach(c => {
                         if (c.position.x2 && c.position.y2) {
                             if (ctx !== null) {
                                 if (c.anim) {
-                                    circleAnimation(ctx, c.position.x2, c.position.y2, c.r);
+                                    circleAnimation(ctx, c.position.x2, c.position.y2, c.color, c.r);
                                 } else {
-                                    drawCircle(ctx, c.position.x2, c.position.y2, c.color, c.r)
+                                    circleRef.current = circleRef.current.filter(f => {
+                                        if (f.anim) return f
+                                    })
                                 }
 
                             }
                         }
+
                     })
                 }
-
             } else {
                 console.log('NULLLL ctx')
             }
@@ -138,10 +158,12 @@ const GridEffect: React.FC = () => {
     let updateCircle = () => {
         if (circleRef.current !== null) {
             circleRef.current.forEach(o => {
-                if (o.r < 150) {
-                    o.r += 3
-                } else {
-                    o.anim = false;
+                if (width !== undefined && height !== undefined) {
+                    if (o.r < solveRadiusCircle(width, height)) {
+                        o.r += 3
+                    } else {
+                        o.anim = false;
+                    }
                 }
             })
 
@@ -170,26 +192,11 @@ const GridEffect: React.FC = () => {
                         let position = getCursorPosition(e.target as HTMLCanvasElement, e);
                         circleRef.current.push({
                             id: new Date().getMilliseconds(),
-                            r: 30,
+                            r: 1,
                             anim: true,
-                            color: 'black',
+                            color: randomColor(),
                             position: {x1: null, y1: null, x2: position.x, y2: position.y}
                         })
-                        // setClickPosition({
-                        //     ...clickPosition,
-                        //     x1: clickPosition.x2,
-                        //     y1: clickPosition.y2,
-                        //     x2: position.x,
-                        //     y2: position.y,
-                        // })
-                        // setArrayCircle([...arrayCircle, {
-                        //     position: {
-                        //         x1: clickPosition.x2,
-                        //         y1: clickPosition.y2,
-                        //         x2: position.x,
-                        //         y2: position.y,
-                        //     }, color: 'red', r: 50, id: new Date().getMilliseconds(), anim: true,
-                        // }])
                     }}
             >
             </canvas>
