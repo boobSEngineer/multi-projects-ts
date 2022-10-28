@@ -87,9 +87,14 @@ let circleAnimation = (ctx: CanvasRenderingContext2D, centerX: number, centerY: 
 
 //------------------------------------------------------------COMPONENT
 const GridEffect: React.FC = () => {
-    let [clickPosition, setClickPosition] = useState<IPosition>({x1: null, y1: null, x2: null, y2: null});
-    let [arrayCircle, setArrayCircle] = useState<ICircle[]>([]);
 
+    let circleRef = useRef<ICircle>({
+        id: 0,
+        r: 50,
+        anim: true,
+        color: 'black',
+        position: {x1: null, y1: null, x2: 300, y2: 200}
+    })
     let canvasRef = useRef<HTMLCanvasElement>(null);
     let requestIdRef = useRef<number>(0);
 
@@ -105,43 +110,47 @@ const GridEffect: React.FC = () => {
         }
     }
 
-    let draw = () => {
+    let circleFrame = () => {
         if (canvasRef.current !== null) {
             let canvas = canvasRef.current;
             let ctx = canvas.getContext('2d');
 
+            let circle = circleRef.current;
             if (ctx !== null) {
 
                 ctx.clearRect(-1, -1, canvasRef.current.width, canvasRef.current.height);
 
+                if (circle !== null) {
+                    if (circle.position.x2 && circle.position.y2) {
 
-                arrayCircle.map(c => {
-                    if (ctx !== null) {
-                        if (c.position.x2 && c.position.y2) {
-                            if (c.anim) {
-                                circleAnimation(ctx, c.position.x2, c.position.y2, c.r);
-                            } else {
-                                drawCircle(ctx, c.position.x2, c.position.y2, c.color, c.r);
-                            }
+                        if (circle.anim) {
+                            circleAnimation(ctx, circle.position.x2, circle.position.y2, circle.r);
+                        } else {
+                            drawCircle(ctx, circle.position.x2, circle.position.y2, circle.color, circle.r);
                         }
                     }
-                })
+                }
+
             } else {
                 console.log('NULLLL ctx')
             }
         }
     }
 
+    let updateCircle = () => {
+        if (circleRef.current !== null) {
+            if (circleRef.current.r < 150) {
+                return circleRef.current.r += 3;
+            } else {
+                return circleRef.current.anim = false;
+            }
+        }
+    }
+
     const tick = () => {
         if (!canvasRef.current) return;
-        setArrayCircle(arrayCircle.map<ICircle>(o => {
-            if (o.r < 150) {
-                return {...o, r: o.r + 30}
-            } else {
-                return {...o, anim: false}
-            }
-        }))
-        draw();
+        updateCircle();
+        circleFrame();
         requestIdRef.current = requestAnimationFrame(tick);
     }
 
@@ -158,26 +167,26 @@ const GridEffect: React.FC = () => {
             <canvas ref={canvasRef} className={g.canvas}
                     onClick={(e) => {
                         let position = getCursorPosition(e.target as HTMLCanvasElement, e);
-                        setClickPosition({
-                            ...clickPosition,
-                            x1: clickPosition.x2,
-                            y1: clickPosition.y2,
-                            x2: position.x,
-                            y2: position.y,
-                        })
-                        setArrayCircle([...arrayCircle, {
-                            position: {
-                                x1: clickPosition.x2,
-                                y1: clickPosition.y2,
-                                x2: position.x,
-                                y2: position.y,
-                            }, color: 'red', r: 50, id: new Date().getMilliseconds(), anim: true,
-                        }])
+                        // setClickPosition({
+                        //     ...clickPosition,
+                        //     x1: clickPosition.x2,
+                        //     y1: clickPosition.y2,
+                        //     x2: position.x,
+                        //     y2: position.y,
+                        // })
+                        // setArrayCircle([...arrayCircle, {
+                        //     position: {
+                        //         x1: clickPosition.x2,
+                        //         y1: clickPosition.y2,
+                        //         x2: position.x,
+                        //         y2: position.y,
+                        //     }, color: 'red', r: 50, id: new Date().getMilliseconds(), anim: true,
+                        // }])
                     }}
             >
             </canvas>
         </div>
     )
-}
+};
 
 export {GridEffect};
