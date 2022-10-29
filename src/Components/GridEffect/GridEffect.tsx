@@ -17,9 +17,9 @@ interface ICircle {
     color: string,
     r: number
 }
+let pixelSize = 50;
 
-
-//------------------------------------------------------------positon
+//------------------------------------------------------------position
 
 let getCursorPosition = (canvas: HTMLCanvasElement, e: any): { x: number, y: number } => {
     const rect = canvas.getBoundingClientRect();
@@ -29,75 +29,43 @@ let getCursorPosition = (canvas: HTMLCanvasElement, e: any): { x: number, y: num
 }
 
 //---------------------------------------------------------draw
-
-// let drawLine = (ctx: CanvasRenderingContext2D, width: number, height: number): void => {
-//     ctx.fillStyle = 'red'
-//     ctx.lineWidth = 2;
-//     let begin_x = 0;
-//     let begin_y = 0;
-//     let to_x = width;
-//     let to_y = 0;
-//     for (let i = 0; i < 25; i++) {
-//         ctx.beginPath();
-//         ctx.moveTo(begin_x, begin_y);
-//         ctx.lineTo(to_x, to_y);
-//         ctx.stroke();
-//         begin_y = begin_y + 50;
-//         to_y = to_y + 50;
-//     }
-//     begin_x = 0;
-//     begin_y = 0;
-//     to_x = 0;
-//     to_y = height;
-//     for (let i = 0; i < 35; i++) {
-//         ctx.beginPath();
-//         ctx.moveTo(begin_x, begin_y);
-//         ctx.lineTo(to_x, to_y);
-//         ctx.stroke();
-//         begin_x = begin_x + 25;
-//         to_x = to_x + 25;
-//     }
-// }
-// let eraserCircle = (ctx: CanvasRenderingContext2D, centerX: number, centerY: number) => {
-//     ctx.beginPath();
-//     ctx.lineWidth = 10;
-//     ctx.globalCompositeOperation = 'destination-out';
-//     let r = 10
-//     ctx.arc(centerX, centerY, r, 0, 2 * Math.PI);
-//     ctx.stroke();
-// }
-
-
 let drawCircle = (ctx: CanvasRenderingContext2D, centerX: number, centerY: number, color: string, r: number) => {
+    //create gradient
+    let gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, r);
+    gradient.addColorStop(1, color+'00');
+    gradient.addColorStop(1- (Math.min(1, 150/pixelSize/r)), color+'ff');
+
+    //draw
     ctx.beginPath();
     ctx.lineWidth = 20;
     ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = `${color}`;
+    ctx.fillStyle = gradient;
+    // ctx.fillStyle = `${color}`;
     ctx.arc(centerX, centerY, r, 0, 2 * Math.PI);
     ctx.fill();
 }
 
 let circleAnimation = (ctx: CanvasRenderingContext2D, centerX: number, centerY: number, color: string, r: number) => {
     if (centerX && centerY) {
-        //drawCircle(ctx, centerX, centerY, 'blue', r - 5);
         drawCircle(ctx, centerX, centerY, color, r);
     }
-
 }
 
-let solveRadiusCircle = (w: number, h: number): number => {
-    return Math.sqrt(Math.pow((w), 2) + Math.pow((h), 2));
+
+let solveRadiusCircle = (): number => {
+    return Math.sqrt(Math.pow((1920), 2) + Math.pow((1080), 2))/pixelSize;
 }
 
-let randomColor = (): string => {
+let randomColor = () => {
     let string_color = [];
     let array_letter = ['a', 'b', 'c', 'd', 'e', 'f'];
 
     for (let i = 0; i < 6; i++) {
-        if (Math.floor(Math.random()) < .6) {
+        if(Math.floor(Math.random()) < .6) {
             let number = Math.floor(Math.random() * 10);
             string_color.push(number)
-        } else {
+        }
+        else {
             let index_letter = Math.floor(Math.random() * 6);
             string_color.push(array_letter[index_letter]);
         }
@@ -105,7 +73,6 @@ let randomColor = (): string => {
     console.log(string_color);
     return '#' + string_color.join('');
 }
-
 
 //------------------------------------------------------------COMPONENT
 const GridEffect: React.FC = () => {
@@ -118,8 +85,8 @@ const GridEffect: React.FC = () => {
 
 
     if (canvasRef.current !== null && width !== undefined && height !== undefined) {
-        width = Math.floor(width)
-        height = Math.floor(height)
+        width = Math.floor(width/pixelSize)
+        height = Math.floor(height/pixelSize)
         if (Math.abs(width - canvasRef.current.width) > 100 || Math.abs(height - canvasRef.current.height) > 100) {
             canvasRef.current.width = width
             canvasRef.current.height = height
@@ -148,6 +115,7 @@ const GridEffect: React.FC = () => {
                         }
 
                     })
+
                 }
             } else {
                 console.log('NULLLL ctx')
@@ -158,12 +126,10 @@ const GridEffect: React.FC = () => {
     let updateCircle = () => {
         if (circleRef.current !== null) {
             circleRef.current.forEach(o => {
-                if (width !== undefined && height !== undefined) {
-                    if (o.r < solveRadiusCircle(width, height)) {
-                        o.r += 3
-                    } else {
-                        o.anim = false;
-                    }
+                if (o.r < solveRadiusCircle()) {
+                    o.r += 6/pixelSize
+                } else {
+                    o.anim = false;
                 }
             })
 
@@ -172,8 +138,8 @@ const GridEffect: React.FC = () => {
 
     const tick = () => {
         if (!canvasRef.current) return;
-        updateCircle();
         circleFrame();
+        updateCircle();
         requestIdRef.current = requestAnimationFrame(tick);
     }
 
