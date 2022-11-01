@@ -1,0 +1,30 @@
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 250px;
+    max-height: 250px;
+    padding: 30px;
+    background-color: #7123ec;
+}
+
+.item_box {
+    margin: 10px;
+}
+.item_box input {
+    padding: 10px;
+}
+
+.item_box button {
+    min-width: 100px;
+    padding: 5px 30px;
+}
