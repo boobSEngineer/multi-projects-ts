@@ -163,7 +163,7 @@ const WeatherSlice = createSlice({
 
                     let firstForecastArray = state.weatherForecast.allForecast.filter(c => {
                         if (state.time.dayCurrent === c.time.getDate()) return true;
-                        // else if (state.daySelected + 1 === c.time.getDate()) return true; error
+                        // else if (state.daySelected + AdaptiveGrid === c.time.getDate()) return true; error
                     })
 
                     if (state.flagChange === true) {
