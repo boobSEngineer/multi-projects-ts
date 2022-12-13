@@ -1,6 +1,6 @@
 import React from "react";
 import t from "./Test1.module.css";
-import icon from "../../../Utilities/Icons/icon_img.png";
+import icon from "../../Utilities/Icons/icon_img.png";
 
 let Test1: React.FC = () => {
     return (

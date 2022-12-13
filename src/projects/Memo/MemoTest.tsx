@@ -1,35 +1,40 @@
 import React, {useState, useMemo, memo} from "react";
 import FactorialCalculation from "./Factorial";
-import Lenka from "./Lenka";
+import Array from "./Array";
+import m from "./MemoTest.module.css";
 
 interface Primer {
     n :string
 }
 
-const Sasha = ({n} : Primer) => {
+const LessOrMore = ({n} : Primer) => {
     const [r, setR] = useState<string>('');
-    let solveR = (n: string): number => {
+
+    let solveR = (n: string): string => {
         if (r < n) {
-            return 69
+            return 'R less N'
         }else  {
-            return 96
+            return 'R more N'
         }
     }
 
-    console.log('render SASHA')
+    console.log('render LessOrMore')
     return (
-        <div style={{border : '2px solid blue', padding: '30px', width: '350px'}}>
-            <h2>{solveR(n)}</h2>
-            <h3>R: {r}, N: {n}</h3>
+        <div style={{borderBottom : '2px solid #f5f5f5', padding: '10px', width: '250px'}}>
+            <div className={m.title}>
+                <h2>{solveR(n)}</h2>
+                <h3>R: {r}, N: {n}</h3>
+            </div>
+            <br/>
             <div>
-                <span>INPUT R</span>
+                <span>Input p:</span>
                 <input placeholder="input n" onChange={(e)=>{setR(e.target.value)}}/>
             </div>
         </div>
 
     )
 };
-const SashaMemo = memo(Sasha);
+const LessOrMoreMemo = memo(LessOrMore);
 
 const MemoTest: React.FC = () => {
     const [number, setNumber] = useState<number>(0);
@@ -39,19 +44,22 @@ const MemoTest: React.FC = () => {
     const arrayMemo = useMemo(() => ([1, 2, 3, 4, 5, 6]), []);
     const countSum = useMemo(()=>(sum(n)), [n]); //GOOD EXAMPLE USE MEMO
     console.log('render MEMO')
-    return (
-        <div >
-            <FactorialCalculation/>
-            {/*<SashaMemo n={n}/>*/}
-            <Lenka array={arrayMemo}/>
-            <h2>{number}</h2>
-            <button onClick={() => {
-                setNumber(number + 1) //GOOD EXAMPLE USE MEMO
-            }}>+
-            </button>
 
-            <div>
-                <span>INPUT N</span>
+    return (
+        <div className={m.wrapper} >
+            <FactorialCalculation/>
+            <LessOrMoreMemo n={n}/>
+            <Array array={arrayMemo}/>
+            <div className={m.click}>
+                <h2>{number}</h2>
+                <button onClick={() => {
+                    setNumber(number + 1) //GOOD EXAMPLE USE MEMO
+                }}>+</button>
+            </div>
+
+
+            <div className={m.plus}>
+                <span>Input n: </span>
                 <input placeholder="input n" onChange={(e)=>{setN(e.target.value)}}/>
                 <span>SUM N + N:</span>
                 <span>{countSum}</span>

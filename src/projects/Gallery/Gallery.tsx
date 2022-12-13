@@ -22,7 +22,7 @@ const Gallery: React.FC = () => {
                     <nav>
                         {
                             albums && albums.map(a => {
-                                return <Link className={g.link} to={`/albums/${a.id}/photos`}><li key={a.id}>{a.id}. {a.title}</li></Link>
+                                return <Link className={g.link} to={`/gallery/${a.id}/photos`}><li key={a.id}>{a.id}. {a.title}</li></Link>
                             })
                         }
                     </nav>

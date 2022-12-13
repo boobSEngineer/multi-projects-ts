@@ -29,7 +29,7 @@ export default ({func}: LoginFormProps) => {
     return (
         <div className={l.wrapper}>
             <form className={l.form_box} onSubmit={handleSubmit}>
-                <h2>LOGIN FORM</h2>
+                <h2 className={l.title}>LOGIN FORM</h2>
                 <label className={l.item_box}>
                     <input name="login" placeholder="login" required/>
                 </label>

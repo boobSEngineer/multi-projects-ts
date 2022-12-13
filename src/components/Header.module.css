@@ -1,0 +1,47 @@
+header {
+    padding: 10px;
+}
+
+h2 {
+    padding: 10px;
+    color: #1f1f1f;
+}
+h2:after {
+    content: ' ( ͡° ͜ʖ ͡°)';
+}
+
+.switch {
+    display: flex;
+    align-items: center;
+}
+
+.switch a {
+    font-weight: 500;
+    font-size: 16px;
+    margin: 0 10px;
+    color: #1f1f1f;
+}
+.switch a:hover {
+    transition: all 0.1s ease 0s;
+    color: #f65718;
+}
+
+/*------------------------------------media---------------------------------*/
+
+@media screen and (max-width: 730px) {
+    .switch {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .switch a {
+        font-weight: 500;
+        font-size: 16px;
+        margin: 10px;
+        color: #1f1f1f;
+    }
+    .switch a:hover {
+        transition: all 0.1s ease 0s;
+        color: #f65718;
+    }
+}

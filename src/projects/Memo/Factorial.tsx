@@ -13,7 +13,7 @@ function FactorialCalculation() {
         : null;
 
     return (
-        <section style={{border : '2px solid red', padding: '30px', width: '250px'}}>
+        <section style={{borderBottom : '2px solid #f5f5f5', padding: '30px', width: '250px'}}>
             <label>Put your number:</label>
             <input
                 type="number"
@@ -37,7 +37,7 @@ function FactorialCalculation() {
 
 
 function factorial(n: number): number {
-    console.log('ONO')
+    console.log('solve factorial')
     if (n < 0) {
         return 69
     } else if (n === 0) {

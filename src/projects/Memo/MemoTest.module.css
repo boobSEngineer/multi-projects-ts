@@ -1,0 +1,46 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 85vh;
+}
+
+input {
+    margin: 0 10px 0 5px;
+    width: 60px;
+    border-bottom: 1px solid darkgrey;
+}
+.title {
+    display: flex;
+    align-items: center;
+}
+.title h2 {
+    color: #e28a43;
+}
+
+.box {
+    padding: 10px;
+    width: 250px;
+    display: flex;
+    border-bottom : 2px solid #f5f5f5;
+}
+.box p {
+    display: flex;
+}
+.click {
+    width: 250px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom : 2px solid #f5f5f5;
+}
+.click button {
+    padding: 10px;
+}
+
+.plus {
+    padding: 10px;
+    border-bottom : 2px solid #f5f5f5;
+}

@@ -1,22 +1,22 @@
 .wrapper {
     width: 100%;
     height: 100%;
-    background-color: #16213E;
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
 .desc {
-    border: 2px solid #0F3460;
     margin: auto auto;
     width: 1200px;
     height: 100%;
     overflow-y: auto;
-    padding: 15px 20px;
+    padding: 40px 0 0 0;
 }
 
 .grid {
+
+
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: 280px;
@@ -75,7 +75,7 @@ ul {
 }
 
 .link {
-    color: #f8f8f8;
+    color: #7b1ef6;
     text-decoration: none;
     font-size: 25px;
 }
@@ -84,8 +84,12 @@ ul {
     list-style-type: none;
 }
 
+.link li:hover {
+    color: #3d1a6c;
+}
+
 h1 {
-    color: #f8f8f8;
+    color: #7b1ef6;
     font-size: 72px;
     margin: 0 15px;
 }
@@ -96,11 +100,10 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #16213E;
 }
 
 .load p {
-    color: #E94560;
+    color: #7b1ef6;
     padding: 300px;
     font-size: 100px;
     text-align: center;

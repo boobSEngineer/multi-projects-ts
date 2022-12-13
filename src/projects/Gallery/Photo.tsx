@@ -50,7 +50,6 @@ const Photo: React.FC<IPhoto> = (props) => {
     const dispatch = useAppDispatch();
     let {id, url, thumbnailUrl, albumId, title} = props
 
-    console.log(direction);
 
     return (
         <>
@@ -71,7 +70,7 @@ const Photo: React.FC<IPhoto> = (props) => {
                         <motion.div className={g.popup}>
                             <motion.div className={g.popup_photo}>
 
-                                <button onClick={() => {dispatch(changeIdBack())}}>-</button>
+                                <button className={p.button + ' ' + p.left}  onClick={() => {dispatch(changeIdBack())}}>⇦</button>
                                 <motion.img src={url}
                                     custom={direction}
                                     initial={direction === null? {opacity: 1, x: -300, y: -300}: "enter"}
@@ -83,7 +82,7 @@ const Photo: React.FC<IPhoto> = (props) => {
                                     }}
                                     variants={variantsImg}
                                 />
-                                <button onClick={() => {dispatch(changeIdNext())}}>+</button>
+                                <button className={p.button + ' ' + p.right} onClick={() => {dispatch(changeIdNext())}}>⇨</button>
 
                             </motion.div>
                         </motion.div>

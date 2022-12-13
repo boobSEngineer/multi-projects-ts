@@ -1,9 +1,12 @@
 .wrapper {
     width: 100vw;
-    height: 100vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.title {
+    color: #f8f8f8;
 }
 
 .form_box {
@@ -14,7 +17,8 @@
     max-width: 250px;
     max-height: 250px;
     padding: 30px;
-    background-color: #7123ec;
+    color: #f8f8f8;
+    background-color: #e28a43;
 }
 
 .item_box {
